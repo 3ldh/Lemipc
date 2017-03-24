@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Fri Mar 24 16:25:39 2017 Alexandre BLANCHARD
+** Last update Fri Mar 24 16:37:21 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
@@ -40,6 +40,7 @@ typedef	struct	s_player
 }		t_player;
 
 extern void	(*move_fct[4])(t_player *, char **);
+
 void		move_up(t_player *, char **);
 void		move_down(t_player *, char **);
 void		move_left(t_player *, char **);

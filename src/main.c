@@ -5,19 +5,23 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Fri Mar 24 15:18:21 2017 Sauvau Mathieu
+** Last update Fri Mar 24 16:35:50 2017 Sauvau Mathieu
 */
 
+#include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
+#include <sys/shm.h>
 #include <stdio.h>
 #include "lemipc.h"
+
 
 int		main(int ac, char **av)
 {
   t_player	player;
+  char		**map;
 
   if (ac != 3)
     {
@@ -39,6 +43,8 @@ int		main(int ac, char **av)
       player.sem_id = semget(player.key, 1, IPC_CREAT | SHM_W | SHM_R);
       printf("Creating semaphore :%d\n", player.sem_id);
     }
+  map = shmat(player.shm_id, NULL, 0);
+  memset(map, '0', WIDTH * HEIGHT);
   shmctl(player.shm_id, IPC_RMID, NULL);
   return (0);
 }

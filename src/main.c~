@@ -1,0 +1,35 @@
+/*
+** main.c for  in /home/sauvau_m/rendu/PSU_2016_lemipc
+**
+** Made by Sauvau Mathieu
+** Login   <mathieu.sauvau@epitech.eu>
+**
+** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
+** Last update Fri Mar 24 15:08:01 2017 Sauvau Mathieu
+*/
+
+#include "lemipc.h"
+
+int		main(int ac, char **av)
+{
+  int		team_nb;
+  t_player	player;
+
+  if (ac != 3)
+    {
+      printf("Usage : ./lemipc path_to_key team_nb\n");
+      return (1);
+    }
+  player.key = ftok(av[1]);
+  player.team_nb = atoi(av[2]);
+  player.first_player = 0;
+  printf("key %d\n", player.key);
+  if ((player.shm_id = shmget(key, WIDTH * HEIGHT, SHM_W | SHM_R)) == -1)
+    {
+      player.shm_id = shmget(key, WIDTH * HEIGHT, IPC_CREAT |  SHM_W | SHM_R);
+      printf("Creating shm :%d\n", player.shm_id);
+      player.first_player = 1;
+    }
+
+  return (0);
+}

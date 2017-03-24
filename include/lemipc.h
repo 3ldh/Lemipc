@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Fri Mar 24 15:44:08 2017 Sauvau Mathieu
+** Last update Fri Mar 24 16:25:39 2017 Alexandre BLANCHARD
 */
 
 #ifndef LEMIPC_H_
@@ -19,13 +19,14 @@
 # include <sys/ipc.h>
 # include <sys/shm.h>
 
-typedef enum	Direction
+typedef enum	direction
   {
+    NONE,
     UP,
     DOWN,
     LEFT,
     RIGHT,
-  }
+  }		direction;
 
 typedef	struct	s_player
 {
@@ -37,5 +38,11 @@ typedef	struct	s_player
   size_t	y;
   int		team_nb;
 }		t_player;
+
+extern void	(*move_fct[4])(t_player *, char **);
+void		move_up(t_player *, char **);
+void		move_down(t_player *, char **);
+void		move_left(t_player *, char **);
+void		move_right(t_player *, char **);
 
 #endif /* ! LEMIPC_H_ */

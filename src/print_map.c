@@ -5,27 +5,30 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Fri Mar 24 14:59:30 2017 Alexandre BLANCHARD
-** Last update Fri Mar 24 15:54:53 2017 Alexandre BLANCHARD
+** Last update Fri Mar 24 16:46:15 2017 Sauvau Mathieu
 */
 
 #include <stdio.h>
 #include "lemipc.h"
 
-void	print_map(char **map)
+void	print_map(char *map)
 {
   int	x;
   int	y;
 
-  y = 0;
-  while (y < HEIGHT)
+  y = -1;
+  x = -1;
+  while (++y < HEIGHT * WIDTH)
     {
-      x = 0;
-      while (x < WIDTH)
+      if (x == WIDTH - 1)
 	{
-	  printf("%c ", map[y][x]);
-	  x++;
+	  x = -1;
+	  printf("\n");
 	}
-      printf("\n");
-      y++;
+      else if (x != -1)
+	printf(" ");
+      ++x;
+      printf("%c", map[y]);
     }
+  printf("\n");
 }

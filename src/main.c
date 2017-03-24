@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Fri Mar 24 16:35:50 2017 Sauvau Mathieu
+** Last update Fri Mar 24 16:49:50 2017 Sauvau Mathieu
 */
 
 #include <string.h>
@@ -21,7 +21,7 @@
 int		main(int ac, char **av)
 {
   t_player	player;
-  char		**map;
+  char		*map;
 
   if (ac != 3)
     {
@@ -45,6 +45,8 @@ int		main(int ac, char **av)
     }
   map = shmat(player.shm_id, NULL, 0);
   memset(map, '0', WIDTH * HEIGHT);
+  print_map(map);
+
   shmctl(player.shm_id, IPC_RMID, NULL);
   return (0);
 }

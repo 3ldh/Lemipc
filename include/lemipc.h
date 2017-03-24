@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Fri Mar 24 16:37:21 2017 Sauvau Mathieu
+** Last update Fri Mar 24 16:39:34 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
@@ -45,5 +45,6 @@ void		move_up(t_player *, char **);
 void		move_down(t_player *, char **);
 void		move_left(t_player *, char **);
 void		move_right(t_player *, char **);
+void		print_map(char *map);
 
 #endif /* ! LEMIPC_H_ */

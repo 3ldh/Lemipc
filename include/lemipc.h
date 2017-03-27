@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Mon Mar 27 13:35:53 2017 Alexandre BLANCHARD
+** Last update Mon Mar 27 14:27:45 2017 Alexandre BLANCHARD
 */
 
 #ifndef LEMIPC_H_
@@ -15,6 +15,7 @@
 # define WIDTH 20
 # define HEIGHT 20
 
+# include <stdbool.h>
 # include <stddef.h>
 # include <sys/ipc.h>
 # include <sys/shm.h>
@@ -48,5 +49,6 @@ void		move_right(t_player *, int *);
 void		print_map(int *map);
 void		make_player_on_map(t_player *, int *);
 void		move_player(t_player *, int *);
+bool		is_alive(t_player *, int *);
 
 #endif /* ! LEMIPC_H_ */

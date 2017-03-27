@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Mon Mar 27 14:27:45 2017 Alexandre BLANCHARD
+** Last update Mon Mar 27 13:36:18 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
@@ -34,7 +34,7 @@ typedef	struct	s_player
   key_t		key;
   int		shm_id;
   int		sem_id;
-  int		first_player;
+  bool		is_first;
   size_t	x;
   size_t	y;
   int		team_nb;
@@ -47,7 +47,7 @@ void		move_down(t_player *, int *);
 void		move_left(t_player *, int *);
 void		move_right(t_player *, int *);
 void		print_map(int *map);
-void		make_player_on_map(t_player *, int *);
+void		put_player_on_map(t_player *, int *);
 void		move_player(t_player *, int *);
 bool		is_alive(t_player *, int *);
 

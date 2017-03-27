@@ -5,13 +5,17 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Fri Mar 24 14:59:30 2017 Alexandre BLANCHARD
+<<<<<<< Updated upstream
 ** Last update Mon Mar 27 14:04:01 2017 Alexandre BLANCHARD
+=======
+** Last update Mon Mar 27 12:55:45 2017 Sauvau Mathieu
+>>>>>>> Stashed changes
 */
 
 #include <stdio.h>
 #include "lemipc.h"
 
-void	make_player_on_map(t_player *player, int *map)
+void	put_player_on_map(t_player *player, int *map)
 {
   map[player->y * WIDTH + player->x] = player->team_nb;
 }

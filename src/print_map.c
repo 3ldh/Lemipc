@@ -5,13 +5,18 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Fri Mar 24 14:59:30 2017 Alexandre BLANCHARD
-** Last update Fri Mar 24 16:46:15 2017 Sauvau Mathieu
+** Last update Mon Mar 27 13:36:20 2017 Alexandre BLANCHARD
 */
 
 #include <stdio.h>
 #include "lemipc.h"
 
-void	print_map(char *map)
+void	make_player_on_map(t_player *player, int *map)
+{
+  map[player->y * WIDTH + player->x] = player->team_nb;
+}
+
+void	print_map(int *map)
 {
   int	x;
   int	y;
@@ -28,7 +33,7 @@ void	print_map(char *map)
       else if (x != -1)
 	printf(" ");
       ++x;
-      printf("%c", map[y]);
+      printf("%d", map[y]);
     }
-  printf("\n");
+  printf("\n----------------------------------------\n");
 }

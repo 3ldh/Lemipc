@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 14:07:49 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 14:34:47 2017 Alexandre BLANCHARD
+** Last update Mon Mar 27 15:27:39 2017 Alexandre BLANCHARD
 */
 
 #include "lemipc.h"
@@ -43,7 +43,10 @@ bool	is_alive(t_player *player, int *map)
 	    && map[(player->y + i) * WIDTH + player->x + j] != 0)
 	  if (check_surronding(map, player->x, player->y,
 			       map[(player->y + i) * WIDTH + player->x + j]) >= 2)
-	    return (false);
+	    {
+	      map[player->y * WIDTH + player->x] = 0;
+	      return (player->is_first);
+	    }
     }
   return (true);
 }

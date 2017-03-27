@@ -5,15 +5,66 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Fri Mar 24 14:59:30 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 14:04:01 2017 Alexandre BLANCHARD
+** Last update Mon Mar 27 15:17:35 2017 Alexandre BLANCHARD
 */
 
+#include <string.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "lemipc.h"
 
-void	make_player_on_map(t_player *player, int *map)
+int	*recup_empty_places(int *map)
 {
-  map[player->y * WIDTH + player->x] = player->team_nb;
+  int	i;
+  int	j;
+  int	*empty;
+
+  empty = malloc((WIDTH * HEIGHT + 1) * sizeof(int));
+  i = -1;
+  j = 0;
+  while (++i < WIDTH * HEIGHT + 1)
+    empty[i] = -1;
+  i = 0;
+  /* memset(map, 0, WIDTH * HEIGHT); */
+  /* printf("%d\n", empty[0]); */
+  while (i < WIDTH * HEIGHT)
+    {
+      if (map[i] == 0)
+	{
+	  empty[j] = i;
+	  j++;
+	}
+      i++;
+    }
+  return (empty);
+}
+
+int	intlen(int *str)
+{
+  int	i;
+
+  i = 0;
+  while (str[i] >= 0)
+    {
+      /* printf("str[%d] = %d\n", i, str[i]); */
+      i++;
+    }
+  /* printf("Il reste %d places\n", i); */
+  return (i);
+}
+
+void	put_player_on_map(t_player *player, int *map)
+{
+  int	*empty;
+  int	empty_len;
+  int	pos;
+
+  empty = recup_empty_places(map);
+  if ((empty_len = intlen(empty)) == 0)
+    return ;
+  pos = rand() % empty_len;
+  map[empty[pos]] = player->team_nb;
+  free(empty);
 }
 
 void	print_map(int *map)

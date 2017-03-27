@@ -5,7 +5,7 @@
 ## Login   <mathieu.sauvau@epitech.eu>
 ##
 ## Started on  Mon Mar  6 10:11:36 2017 Sauvau Mathieu
-## Last update Fri Mar 24 15:11:13 2017 Sauvau Mathieu
+## Last update Fri Mar 24 17:15:53 2017 Alexandre BLANCHARD
 ##
 
 # USEFUL VARIABLES
@@ -31,7 +31,7 @@ NAME	=	lemipc
 
 LIB	=	-lpthread
 
-CFLAGS	=	-W -Wall -Wextra -Werror\
+CFLAGS	=	-W -Wall -Wextra -Werror -g\
 		-Iinclude/ \
 
 CC	=	gcc $(CFLAGS)

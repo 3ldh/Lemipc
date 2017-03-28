@@ -5,9 +5,11 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 14:07:49 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 15:27:39 2017 Alexandre BLANCHARD
+** Last update Mon Mar 27 16:02:25 2017 Alexandre BLANCHARD
 */
 
+#include <stdio.h>
+#include <stdio.h>
 #include "lemipc.h"
 
 int	check_surronding(int *map, int x, int y,
@@ -33,20 +35,25 @@ bool	is_alive(t_player *player, int *map)
 {
   int	i;
   int	j;
+  int	map_value;
 
   i = -2;
   while (++i < 2)
     {
       j = -2;
       while (++j < 2)
-	if (map[(player->y + i) * WIDTH + player->x + j] != player->team_nb
-	    && map[(player->y + i) * WIDTH + player->x + j] != 0)
-	  if (check_surronding(map, player->x, player->y,
-			       map[(player->y + i) * WIDTH + player->x + j]) >= 2)
-	    {
-	      map[player->y * WIDTH + player->x] = 0;
-	      return (player->is_first);
-	    }
+	{
+	  map_value = (player->y + i) * WIDTH + player->x + j;
+	  if (map_value >= 0 && map_value < HEIGHT * WIDTH
+	      && map[map_value] != player->team_nb
+	      && map[map_value] != 0)
+	    if (check_surronding(map, player->x, player->y,
+				 map[map_value]) >= 2)
+	      {
+		map[player->y * WIDTH + player->x] = 0;
+		return (player->is_first);
+	      }
+	}
     }
   return (true);
 }

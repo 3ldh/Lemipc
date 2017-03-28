@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Fri Mar 24 14:59:30 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 15:17:35 2017 Alexandre BLANCHARD
+** Last update Mon Mar 27 16:01:44 2017 Alexandre BLANCHARD
 */
 
 #include <string.h>
@@ -19,7 +19,8 @@ int	*recup_empty_places(int *map)
   int	j;
   int	*empty;
 
-  empty = malloc((WIDTH * HEIGHT + 1) * sizeof(int));
+  if ((empty = malloc((WIDTH * HEIGHT + 1) * sizeof(int))) == NULL)
+    exit(1);
   i = -1;
   j = 0;
   while (++i < WIDTH * HEIGHT + 1)
@@ -64,6 +65,8 @@ void	put_player_on_map(t_player *player, int *map)
     return ;
   pos = rand() % empty_len;
   map[empty[pos]] = player->team_nb;
+  player->x = empty[pos] % WIDTH;
+  player->y = empty[pos] / WIDTH;
   free(empty);
 }
 

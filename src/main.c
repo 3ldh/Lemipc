@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Wed Mar 29 16:53:27 2017 Sauvau Mathieu
+** Last update Wed Mar 29 17:05:12 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -155,13 +155,14 @@ direction	switch_dir(direction dir)
   return (NONE);
 }
 
-direction	get_direction(t_player *player, int *map, int pos)
+direction		get_direction(t_player *player, int *map, int pos)
 {
-  int		x;
-  int		y;
-  int		diff_x;
-  int		diff_y;
-  direction	dir;
+  int			x;
+  int			y;
+  int			diff_x;
+  int			diff_y;
+  direction		dir;
+  static direction	prev_dir;
 
   x = pos % WIDTH;
   y = pos / WIDTH;
@@ -170,14 +171,16 @@ direction	get_direction(t_player *player, int *map, int pos)
   diff_y = (int)(y - player->y);
   if (!next_to_enemy(player, pos))
     {
-      if (diff_x != 0)
+      if (prev_dir != LEFT)
 	{
 	  (diff_x < 0) ? (dir = LEFT) : (dir = RIGHT);
+	  prev_dir = LEFT;
 	  if (dir != NONE && can_move_direction(player->x, player->y, map, dir))
 	    return (dir);
 	}
-      if (diff_y != 0)
+      else
 	{
+	  prev_dir = UP;
 	  (diff_y < 0) ? (dir = UP) : (dir = DOWN);
 	  if (dir != NONE && can_move_direction(player->x, player->y, map, dir))
 	    return (dir);
@@ -306,16 +309,15 @@ int		main(int ac, char **av)
   while (!check_launch(map));
   while (is_alive(&player, map))
     {
+      if (is_winner(map))
+  	break;
       lock(player.sem_id);
       call_to_arms(&player, map);
       if (player.is_first)
   	  print_map(map);
       unlock(player.sem_id);
-      if (is_winner(map))
-  	break;
       sleep(1);
     }
-  //TODO if last team
   shmctl(player.shm_id, IPC_RMID, NULL);
   msgctl(player.msg_id, IPC_RMID, NULL);
   return (0);

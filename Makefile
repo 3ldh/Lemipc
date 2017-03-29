@@ -5,7 +5,7 @@
 ## Login   <mathieu.sauvau@epitech.eu>
 ##
 ## Started on  Mon Mar  6 10:11:36 2017 Sauvau Mathieu
-## Last update Fri Mar 24 15:11:13 2017 Sauvau Mathieu
+## Last update Wed Mar 29 08:34:55 2017 Sauvau Mathieu
 ##
 
 # USEFUL VARIABLES
@@ -29,12 +29,12 @@ OBJS    =	$(SRC:.c=.o)
 
 NAME	=	lemipc
 
-LIB	=	-lpthread
+LIB	=	-lpthread -lm
 
 CFLAGS	=	-W -Wall -Wextra -Werror\
 		-Iinclude/ \
 
-CC	=	gcc $(CFLAGS)
+CC	=	gcc $(CFLAGS) -g
 
 
 # PROJECT RULES

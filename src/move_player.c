@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Fri Mar 24 15:03:07 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 13:53:30 2017 Sauvau Mathieu
+** Last update Tue Mar 28 15:37:32 2017 Sauvau Mathieu
 */
 
 #include <stdio.h>
@@ -78,7 +78,7 @@ char	*check_can_move(int *map, int x, int y)
   return (moves);
 }
 
-void	move_player(t_player *player, int *map)
+void	move_random(t_player *player, int *map)
 {
   char	*moves;
   int	go;

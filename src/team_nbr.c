@@ -1,3 +1,4 @@
+
 /*
 ** team_nbr.c for lemipc in /home/blanch_p/rendu/Semestre3/Unix/PSU_2016_lemipc
 **
@@ -5,7 +6,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 15:32:42 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 15:49:52 2017 Alexandre BLANCHARD
+** Last update Wed Mar 29 16:35:10 2017 Alexandre BLANCHARD
 */
 
 #include <stdlib.h>
@@ -64,6 +65,7 @@ bool	is_two_teams(int *map)
 	      j++;
 	    }
 	}
+      i++;
     }
   return (have_nb_teams(team_nb));
 }

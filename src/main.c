@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Tue Mar 28 18:47:07 2017 Alexandre BLANCHARD
+** Last update Wed Mar 29 15:34:47 2017 Alexandre BLANCHARD
 */
 
 #include <time.h>
@@ -94,6 +94,7 @@ int		main(int ac, char **av)
   	print_map(map);
       unlock(player.sem_id);
       printf("is winner = %d\n", is_winner(map));
+      printf("can launch game ? -> %d\n", check_launch(map));
       sleep(5);
     }
 

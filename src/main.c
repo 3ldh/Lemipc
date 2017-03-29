@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Wed Mar 29 16:45:20 2017 Alexandre BLANCHARD
+** Last update Wed Mar 29 16:53:27 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -71,7 +71,7 @@ float		distance_vector2(t_vector2 a, t_vector2 b)
   t_vector2	vec;
 
   vec = diff_vector(a, b);
-  return (sqrt(vec.x * vec.x + vec.y * vec.y));
+  return (vec.x + vec.y);
 }
 
 t_vector2	get_vector2(int x, int y)
@@ -93,14 +93,15 @@ int		find_nearest_enemy(t_player *player, int *map)
 
   i = -1;
   pos = -1;
-  nearest = get_vector2(0, 0);
+  nearest = get_vector2(player->x, player->y);
   player_pos = get_vector2(player->x, player->y);
   while (++i < WIDTH * HEIGHT)
     {
       current = get_vector2(i % WIDTH, i / WIDTH);
       if (abs(player->x - current.x) <= FIND_RANGE && abs(player->y - current.y) <= FIND_RANGE &&
 	  map[i] != player->team_nb && map[i] != 0 &&
-	  abs(distance_vector2(player_pos, nearest)) > abs(distance_vector2(player_pos, current)))
+	  (abs(distance_vector2(player_pos, nearest)) == 0 ||
+	   abs(distance_vector2(player_pos, nearest)) > abs(distance_vector2(player_pos, current))))
 	{
 	  nearest = current;
 	  pos = i;
@@ -117,7 +118,20 @@ bool		can_move_direction(int x, int y, int *map,
   vec = g_dir_to_vector2[dir];
   if ((y + vec.y) * WIDTH + x + vec.x >= 0 &&
       (y + vec.y) * WIDTH + x + vec.x < WIDTH * HEIGHT)
-      return (map[(y + vec.y) * WIDTH + x + vec.x] == 0);
+    return (map[(y + vec.y) * WIDTH + x + vec.x] == 0);
+  return (false);
+}
+
+
+bool		is_team_blocking_direction(t_player *player, int *map,
+				   direction dir)
+{
+  t_vector2	vec;
+
+  vec = g_dir_to_vector2[dir];
+  if (((int)player->y + vec.y) * WIDTH + (int)player->x + vec.x >= 0 &&
+      (player->y + vec.y) * WIDTH + player->x + vec.x < WIDTH * HEIGHT)
+      return (map[(player->y + vec.y) * WIDTH + player->x + vec.x] == player->team_nb);
   return (false);
 }
 
@@ -125,6 +139,20 @@ bool		next_to_enemy(t_player *player, int pos_enemy)
 {
   return (abs(pos_enemy % WIDTH - player->x) <= 1
 	  && abs(pos_enemy / WIDTH - player->y) <= 1);
+}
+
+direction	switch_dir(direction dir)
+{
+
+  if (dir == UP)
+    return (DOWN);
+  if (dir == RIGHT)
+    return (LEFT);
+  if (dir == LEFT)
+    return (RIGHT);
+  if (dir == DOWN)
+      return (UP);
+  return (NONE);
 }
 
 direction	get_direction(t_player *player, int *map, int pos)
@@ -274,9 +302,8 @@ int		main(int ac, char **av)
   printf("using shm_id :%d\n", player.shm_id);
   semctl(player.sem_id, 0, SETVAL, 1);
   map = shmat(player.shm_id, NULL, 0);
-  /* player.x = rand() % WIDTH; */
-  /* player.y = rand() % HEIGHT; */
   put_player_on_map(&player, map);
+  while (!check_launch(map));
   while (is_alive(&player, map))
     {
       lock(player.sem_id);
@@ -284,9 +311,9 @@ int		main(int ac, char **av)
       if (player.is_first)
   	  print_map(map);
       unlock(player.sem_id);
-      printf("is winner = %d\n", is_winner(map));
-      printf("can launch game ? -> %d\n", check_launch(map));
-      sleep(5);
+      if (is_winner(map))
+  	break;
+      sleep(1);
     }
   //TODO if last team
   shmctl(player.shm_id, IPC_RMID, NULL);

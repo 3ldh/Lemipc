@@ -1,11 +1,11 @@
 /*
-** print_map.c for lemipc in /home/blanch_p/rendu/Semestre3/Unix/PSU_2016_lemipc
+** print_map.c for  in /home/sauvau_m/rendu/PSU_2016_lemipc
 **
-** Made by Alexandre BLANCHARD
-** Login   <blanch_p@epitech.net>
+** Made by Sauvau Mathieu
+** Login   <mathieu.sauvau@epitech.eu>
 **
-** Started on  Fri Mar 24 14:59:30 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 16:01:44 2017 Alexandre BLANCHARD
+** Started on  Wed Mar 29 15:12:16 2017 Sauvau Mathieu
+** Last update Wed Mar 29 15:12:18 2017 Sauvau Mathieu
 */
 
 #include <string.h>

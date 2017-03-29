@@ -5,12 +5,30 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 14:07:49 2017 Alexandre BLANCHARD
-** Last update Mon Mar 27 16:02:25 2017 Alexandre BLANCHARD
+** Last update Tue Mar 28 15:20:39 2017 Alexandre BLANCHARD
 */
 
 #include <stdio.h>
 #include <stdio.h>
 #include "lemipc.h"
+
+bool	is_winner(int *map)
+{
+  int	i;
+  int	team;
+
+  i = 0;
+  team = 0;
+  while (i < WIDTH * HEIGHT)
+    {
+      if (map[i] != 0 && team != 0 && map[i] != team)
+	return (false);
+      if (team == 0 && map[i] != 0)
+	team = map[i];
+      i++;
+    }
+  return (true);
+}
 
 int	check_surronding(int *map, int x, int y,
 			 int team_nb)

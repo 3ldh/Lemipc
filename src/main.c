@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Mon Mar 27 16:27:25 2017 Alexandre BLANCHARD
+** Last update Tue Mar 28 18:47:07 2017 Alexandre BLANCHARD
 */
 
 #include <time.h>
@@ -93,7 +93,8 @@ int		main(int ac, char **av)
       if (player.is_first)
   	print_map(map);
       unlock(player.sem_id);
-      sleep(2);
+      printf("is winner = %d\n", is_winner(map));
+      sleep(5);
     }
 
   shmctl(player.shm_id, IPC_RMID, NULL);

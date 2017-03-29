@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Mon Mar 27 15:46:25 2017 Alexandre BLANCHARD
+** Last update Tue Mar 28 15:20:54 2017 Alexandre BLANCHARD
 */
 
 #ifndef LEMIPC_H_
@@ -50,5 +50,6 @@ void		print_map(int *map);
 void		put_player_on_map(t_player *, int *);
 void		move_player(t_player *, int *);
 bool		is_alive(t_player *, int *);
+bool		is_winner(int *);
 
 #endif /* ! LEMIPC_H_ */

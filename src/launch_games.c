@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Wed Mar 29 14:09:48 2017 Alexandre BLANCHARD
-** Last update Wed Mar 29 16:49:55 2017 Alexandre BLANCHARD
+** Last update Wed Mar 29 16:55:10 2017 Alexandre BLANCHARD
 */
 
 #include <stdio.h>
@@ -49,7 +49,6 @@ bool	check_launch(int *map)
     }
   nb_team = is_two_teams(map);
   /* printf("is_two_teams ? -> %d\n", nb_team); */
-  /* printf("nb_players = %d\n", nb_players); */
   /* printf("two in team ? -> %d\n", two_in_team); */
   if (nb_team == true && two_in_team == true)
     return (true);

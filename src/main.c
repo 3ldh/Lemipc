@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Wed Mar 29 16:53:27 2017 Sauvau Mathieu
+** Last update Wed Mar 29 16:57:39 2017 Alexandre BLANCHARD
 */
 
 #include <time.h>
@@ -306,13 +306,13 @@ int		main(int ac, char **av)
   while (!check_launch(map));
   while (is_alive(&player, map))
     {
+      if (is_winner(map))
+  	break;
       lock(player.sem_id);
       call_to_arms(&player, map);
       if (player.is_first)
   	  print_map(map);
       unlock(player.sem_id);
-      if (is_winner(map))
-  	break;
       sleep(1);
     }
   //TODO if last team

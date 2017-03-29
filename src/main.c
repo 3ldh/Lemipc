@@ -5,10 +5,10 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Wed Mar 29 15:10:25 2017 Sauvau Mathieu
+** Last update Wed Mar 29 15:14:36 2017 Sauvau Mathieu
 */
 
-#include <math.h>
+#include <time.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -240,6 +240,7 @@ int		main(int ac, char **av)
   t_player	player;
   void		*map;
 
+  srand(time(0));
   if (ac != 3)
     {
       printf("Usage : ./lemipc path_to_key team_nb\n");
@@ -250,9 +251,11 @@ int		main(int ac, char **av)
   player.team_nb = atoi(av[2]);
   player.is_first = false;
   printf("key %d\n", player.key);
-  if ((player.shm_id = shmget(player.key, WIDTH * HEIGHT * sizeof(int), SHM_W | SHM_R)) == -1)
+  if ((player.shm_id = shmget(player.key, WIDTH * HEIGHT *
+			      sizeof(int), SHM_W | SHM_R)) == -1)
     {
-      player.shm_id = shmget(player.key, WIDTH * HEIGHT * sizeof(int), IPC_CREAT |  SHM_W | SHM_R);
+      player.shm_id = shmget(player.key, WIDTH * HEIGHT *
+			     sizeof(int), IPC_CREAT |  SHM_W | SHM_R);
       printf("Creating shm :%d\n", player.shm_id);
       player.is_first = true;
       map = shmat(player.shm_id, NULL, 0);
@@ -271,8 +274,8 @@ int		main(int ac, char **av)
   printf("using shm_id :%d\n", player.shm_id);
   semctl(player.sem_id, 0, SETVAL, 1);
   map = shmat(player.shm_id, NULL, 0);
-  player.x = rand() % WIDTH;
-  player.y = rand() % HEIGHT;
+  /* player.x = rand() % WIDTH; */
+  /* player.y = rand() % HEIGHT; */
   put_player_on_map(&player, map);
   while (is_alive(&player, map))
     {
@@ -281,7 +284,8 @@ int		main(int ac, char **av)
       if (player.is_first)
   	  print_map(map);
       unlock(player.sem_id);
-      sleep(2);
+      printf("is winner = %d\n", is_winner(map));
+      sleep(5);
     }
   //TODO if last team
   shmctl(player.shm_id, IPC_RMID, NULL);

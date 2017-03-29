@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Wed Mar 29 09:04:52 2017 Sauvau Mathieu
+** Last update Wed Mar 29 15:13:23 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
@@ -71,11 +71,12 @@ void		print_map(int *map);
 void		put_player_on_map(t_player *, int *);
 void		move_random(t_player *, int *);
 bool		is_alive(t_player *, int *);
+
 void		call_to_arms(t_player *player, int *map);
 bool		listen_to_team(t_player *player, int *map, t_msg *msg);
 bool		is_target_alive(t_player *player, int pos_target, int *map);
 direction	get_direction(t_player *player, int *map, int pos);
 int		find_nearest_enemy(t_player *player, int *map);
-
+bool		is_winner(int *);
 
 #endif /* ! LEMIPC_H_ */

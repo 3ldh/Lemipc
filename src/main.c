@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Thu Mar 30 15:06:14 2017 Sauvau Mathieu
+** Last update Thu Mar 30 15:23:07 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -64,7 +64,7 @@ void		init_sem_msg(t_player *player)
     }
 }
 
-void		init_shm(t_player *player)
+void		init_shm(t_player *player, int **map)
 {
   if ((player->shm_id = shmget(player->key, WIDTH * HEIGHT *
 			      sizeof(int), SHM_W | SHM_R)) == -1)
@@ -73,25 +73,24 @@ void		init_shm(t_player *player)
 			     sizeof(int), IPC_CREAT |  SHM_W | SHM_R);
       printf("Creating shm :%d\n", player->shm_id);
       player->is_first = true;
-      map = shmat(player->shm_id, NULL, 0);
-      memset(map, 0, WIDTH * HEIGHT * sizeof(int));
+      *map = shmat(player->shm_id, NULL, 0);
+      memset(*map, 0, WIDTH * HEIGHT * sizeof(int));
     }
 }
 
-void		loop(t_player *playern, int *map)
+void		loop(t_player *player, int *map)
 {
-  while (!check_launch(&player, map));
-  while ((player->alive = is_alive(&player, map)) || player->is_first)
+  while (!check_launch(player, map));
+  while ((player->alive = is_alive(player, map)) || player->is_first)
     {
       if (is_winner(map))
       	break;
       lock(player->sem_id);
       if (player->alive)
-	call_to_arms(&player, map);
+	call_to_arms(player, map);
       if (player->is_first)
       	  print_map(map);
       unlock(player->sem_id);
-      sleep(1);
     }
   if (player->is_first)
     {
@@ -103,7 +102,7 @@ void		loop(t_player *playern, int *map)
 int		main(int ac, char **av)
 {
   t_player	player;
-  void		*map;
+  int		*map;
 
   if (ac != 3)
     {
@@ -115,7 +114,7 @@ int		main(int ac, char **av)
   player.alive = true;
   player.team_nb = atoi(av[2]);
   player.is_first = false;
-  init_shm(&player);
+  init_shm(&player, &map);
   init_sem_msg(&player);
   semctl(player.sem_id, 0, SETVAL, 1);
   map = shmat(player.shm_id, NULL, 0);

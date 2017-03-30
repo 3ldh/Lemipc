@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 14:07:49 2017 Alexandre BLANCHARD
-** Last update Tue Mar 28 15:20:39 2017 Alexandre BLANCHARD
+** Last update Wed Mar 29 17:44:59 2017 Sauvau Mathieu
 */
 
 #include <stdio.h>
@@ -33,6 +33,7 @@ bool	is_winner(int *map)
 int	check_surronding(int *map, int x, int y,
 			 int team_nb)
 {
+  int	val;
   int	count;
   int	i;
   int	j;
@@ -43,35 +44,41 @@ int	check_surronding(int *map, int x, int y,
     {
       j = -2;
       while (++j < 2)
-	if (map[(y + i) * WIDTH + x + j] == team_nb)
-	  ++count;
+	{
+	  val = (y + i) * WIDTH + x + j;
+	  if (val >= 0 && val < HEIGHT * WIDTH &&
+	      map[val] == team_nb)
+	    ++count;
+	}
     }
   return (count);
 }
 
-bool	is_alive(t_player *player, int *map)
+bool    is_alive(t_player *player, int *map)
 {
-  int	i;
-  int	j;
-  int	map_value;
+  int   i;
+  int   j;
+  int   map_value;
 
   i = -2;
+  if (!player->alive)
+    return (false);
   while (++i < 2)
     {
       j = -2;
       while (++j < 2)
-	{
-	  map_value = (player->y + i) * WIDTH + player->x + j;
-	  if (map_value >= 0 && map_value < HEIGHT * WIDTH
-	      && map[map_value] != player->team_nb
-	      && map[map_value] != 0)
-	    if (check_surronding(map, player->x, player->y,
-				 map[map_value]) >= 2)
-	      {
-		map[player->y * WIDTH + player->x] = 0;
-		return (player->is_first);
-	      }
-	}
+        {
+          map_value = (player->y + i) * WIDTH + player->x + j;
+          if (map_value >= 0 && map_value < HEIGHT * WIDTH
+              && map[map_value] != player->team_nb
+              && map[map_value] != 0)
+            if (check_surronding(map, player->x, player->y,
+                                 map[map_value]) >= 2)
+              {
+                map[player->y * WIDTH + player->x] = 0;
+                return (false);
+              }
+        }
     }
   return (true);
 }

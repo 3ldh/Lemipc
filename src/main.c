@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Wed Mar 29 17:05:12 2017 Sauvau Mathieu
+** Last update Wed Mar 29 17:49:36 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -271,7 +271,6 @@ int		main(int ac, char **av)
   t_player	player;
   void		*map;
 
-  srand(time(0));
   if (ac != 3)
     {
       printf("Usage : ./lemipc path_to_key team_nb\n");
@@ -279,6 +278,7 @@ int		main(int ac, char **av)
     }
   srand(time(0));
   player.key = ftok(av[1], 0);
+  player.alive = true;
   player.team_nb = atoi(av[2]);
   player.is_first = false;
   printf("key %d\n", player.key);
@@ -307,18 +307,22 @@ int		main(int ac, char **av)
   map = shmat(player.shm_id, NULL, 0);
   put_player_on_map(&player, map);
   while (!check_launch(map));
-  while (is_alive(&player, map))
+  while ((player.alive = is_alive(&player, map)) || player.is_first)
     {
-      if (is_winner(map))
-  	break;
+      /* if (is_winner(map)) */
+      /* 	break; */
       lock(player.sem_id);
-      call_to_arms(&player, map);
+      if (player.alive)
+	call_to_arms(&player, map);
       if (player.is_first)
-  	  print_map(map);
+      	  print_map(map);
       unlock(player.sem_id);
       sleep(1);
     }
-  shmctl(player.shm_id, IPC_RMID, NULL);
-  msgctl(player.msg_id, IPC_RMID, NULL);
+  /* if (player.is_first) */
+  /*   { */
+      shmctl(player.shm_id, IPC_RMID, NULL);
+      msgctl(player.msg_id, IPC_RMID, NULL);
+      //    }
   return (0);
 }

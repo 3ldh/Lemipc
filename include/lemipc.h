@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Wed Mar 29 16:45:37 2017 Alexandre BLANCHARD
+** Last update Wed Mar 29 17:41:17 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
@@ -49,6 +49,7 @@ typedef	struct	s_player
   int		sem_id;
   int		msg_id;
   bool		is_first;
+  bool		alive;
   size_t	x;
   size_t	y;
   int		team_nb;

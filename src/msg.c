@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 14:15:17 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:18:56 2017 Sauvau Mathieu
+** Last update Thu Mar 30 15:14:37 2017 Sauvau Mathieu
 */
 
 #include <sys/ipc.h>
@@ -41,8 +41,8 @@ int		wait_msg(t_player *player, t_msg *msg)
   r = msgrcv(player->msg_id, msg, sizeof(t_msg), player->team_nb, IPC_NOWAIT);
   if (r < 0)
     printf("error %s\n", strerror(errno));
-  printf("return value msgrecv :%d\n", r);
-  return r;
+  printf("value msgrecv :%d\n", r);
+  return (r);
 }
 
 void		send_msg(t_player *player, int pos)
@@ -52,6 +52,7 @@ void		send_msg(t_player *player, int pos)
   bzero(&msg, sizeof(t_msg));
   msg.mtype = player->team_nb;
   sprintf(msg.mtext, "%d", pos);
-  printf("msg_id %d -> pos send to team :%ld %s\n", player->msg_id, msg.mtype, msg.mtext);
+  printf("msg_id %d -> pos send to team :%ld %s\n",
+	 player->msg_id, msg.mtype, msg.mtext);
   msgsnd(player->msg_id, &msg, sizeof(msg), IPC_NOWAIT);
 }

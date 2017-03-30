@@ -1,4 +1,3 @@
-
 /*
 ** team_nbr.c for lemipc in /home/blanch_p/rendu/Semestre3/Unix/PSU_2016_lemipc
 **
@@ -6,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 15:32:42 2017 Alexandre BLANCHARD
-** Last update Wed Mar 29 16:35:10 2017 Alexandre BLANCHARD
+** Last update Thu Mar 30 14:54:49 2017 Alexandre BLANCHARD
 */
 
 #include <stdlib.h>

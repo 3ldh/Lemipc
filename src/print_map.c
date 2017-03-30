@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Wed Mar 29 15:12:16 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:05:40 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:58:45 2017 Alexandre BLANCHARD
 */
 
 #include <string.h>
@@ -26,8 +26,6 @@ int	*recup_empty_places(int *map)
   while (++i < WIDTH * HEIGHT + 1)
     empty[i] = -1;
   i = 0;
-  /* memset(map, 0, WIDTH * HEIGHT); */
-  /* printf("%d\n", empty[0]); */
   while (i < WIDTH * HEIGHT)
     {
       if (map[i] == 0)
@@ -47,10 +45,8 @@ int	intlen(int *str)
   i = 0;
   while (str[i] >= 0)
     {
-      /* printf("str[%d] = %d\n", i, str[i]); */
       i++;
     }
-  /* printf("Il reste %d places\n", i); */
   return (i);
 }
 

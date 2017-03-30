@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Wed Mar 29 14:09:48 2017 Alexandre BLANCHARD
-** Last update Thu Mar 30 13:51:58 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:55:41 2017 Alexandre BLANCHARD
 */
 
 #include <stdio.h>
@@ -42,7 +42,6 @@ bool	check_launch(t_player *player, int *map)
       if (map[i] != 0 && prev_team_nb != map[i])
 	{
 	  prev_team_nb = map[i];
-	  printf("nb_player for team %d :%d\n", map[i], nb_players_team(map, map[i]));
 	  if (nb_players_team(map, map[i]) < MIN_PLAYER)
 	    {
 	      unlock(player->sem_id);
@@ -53,6 +52,5 @@ bool	check_launch(t_player *player, int *map)
 	}
     }
   unlock(player->sem_id);
-  printf("nb_team :%d\n", nb_team);
   return (nb_team >= MIN_TEAM);
 }

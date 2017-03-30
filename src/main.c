@@ -4,8 +4,8 @@
 ** Made by Sauvau Mathieu
 ** Login   <mathieu.sauvau@epitech.eu>
 **
-** Started on  Fri Mar 24 14:14:25 2017 Sauvau Mathieu
-** Last update Wed Mar 29 17:49:36 2017 Sauvau Mathieu
+** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:01:55 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -306,11 +306,11 @@ int		main(int ac, char **av)
   semctl(player.sem_id, 0, SETVAL, 1);
   map = shmat(player.shm_id, NULL, 0);
   put_player_on_map(&player, map);
-  while (!check_launch(map));
+  while (!check_launch(&player, map));
   while ((player.alive = is_alive(&player, map)) || player.is_first)
     {
-      /* if (is_winner(map)) */
-      /* 	break; */
+      if (is_winner(map))
+      	break;
       lock(player.sem_id);
       if (player.alive)
 	call_to_arms(&player, map);
@@ -319,10 +319,10 @@ int		main(int ac, char **av)
       unlock(player.sem_id);
       sleep(1);
     }
-  /* if (player.is_first) */
-  /*   { */
+  if (player.is_first)
+    {
       shmctl(player.shm_id, IPC_RMID, NULL);
       msgctl(player.msg_id, IPC_RMID, NULL);
-      //    }
+    }
   return (0);
 }

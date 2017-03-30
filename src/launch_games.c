@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Wed Mar 29 14:09:48 2017 Alexandre BLANCHARD
-** Last update Wed Mar 29 16:55:10 2017 Alexandre BLANCHARD
+** Last update Thu Mar 30 13:51:58 2017 Sauvau Mathieu
 */
 
 #include <stdio.h>
@@ -27,30 +27,32 @@ int	nb_players_team(int *map, int team)
   return (nb_players);
 }
 
-bool	check_launch(int *map)
+bool	check_launch(t_player *player, int *map)
 {
   int	i;
-  bool	two_in_team;
-  int	nb_players;
   int	nb_team;
+  int	prev_team_nb;
 
-  i = 0;
-  two_in_team = false;
-  nb_players = 0;
-  while (i < WIDTH * HEIGHT)
+  i = -1;
+  prev_team_nb = 0;
+  nb_team = 0;
+  lock(player->sem_id);
+  while (++i < WIDTH * HEIGHT)
     {
-      if (map[i] != 0)
+      if (map[i] != 0 && prev_team_nb != map[i])
 	{
-	  if (nb_players_team(map, map[i]) >= 2)
-	    two_in_team = true;
-	  nb_players++;
+	  prev_team_nb = map[i];
+	  printf("nb_player for team %d :%d\n", map[i], nb_players_team(map, map[i]));
+	  if (nb_players_team(map, map[i]) < MIN_PLAYER)
+	    {
+	      unlock(player->sem_id);
+	      return (false);
+	    }
+	  else
+	    ++nb_team;
 	}
-      i++;
     }
-  nb_team = is_two_teams(map);
-  /* printf("is_two_teams ? -> %d\n", nb_team); */
-  /* printf("two in team ? -> %d\n", two_in_team); */
-  if (nb_team == true && two_in_team == true)
-    return (true);
-  return (false);
+  unlock(player->sem_id);
+  printf("nb_team :%d\n", nb_team);
+  return (nb_team >= MIN_TEAM);
 }

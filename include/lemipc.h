@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Wed Mar 29 17:41:17 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:00:10 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
@@ -15,6 +15,8 @@
 # define WIDTH 20
 # define HEIGHT 20
 # define FIND_RANGE 20
+# define MIN_TEAM 2
+# define MIN_PLAYER 1
 
 # include <stdbool.h>
 # include <stddef.h>
@@ -50,6 +52,7 @@ typedef	struct	s_player
   int		msg_id;
   bool		is_first;
   bool		alive;
+  bool		active;
   size_t	x;
   size_t	y;
   int		team_nb;
@@ -80,6 +83,6 @@ direction	get_direction(t_player *player, int *map, int pos);
 int		find_nearest_enemy(t_player *player, int *map);
 bool		is_winner(int *);
 bool		is_two_teams(int *);
-bool		check_launch(int *);
+bool		check_launch(t_player *, int *);
 
 #endif /* ! LEMIPC_H_ */

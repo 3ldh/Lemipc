@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 14:15:17 2017 Sauvau Mathieu
-** Last update Thu Mar 30 15:02:11 2017 Alexandre BLANCHARD
+** Last update Thu Mar 30 15:17:44 2017 Alexandre BLANCHARD
 */
 
 #include <sys/ipc.h>
@@ -41,7 +41,7 @@ int		wait_msg(t_player *player, t_msg *msg)
   r = msgrcv(player->msg_id, msg, sizeof(t_msg), player->team_nb, IPC_NOWAIT);
   if (r < 0)
     printf("error %s\n", strerror(errno));
-  printf("return value msgrecv :%d\n", r);
+  printf("value msgrecv :%d\n", r);
   return (r);
 }
 

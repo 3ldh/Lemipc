@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Wed Mar 29 15:12:16 2017 Sauvau Mathieu
-** Last update Wed Mar 29 15:12:18 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:05:40 2017 Sauvau Mathieu
 */
 
 #include <string.h>
@@ -54,7 +54,7 @@ int	intlen(int *str)
   return (i);
 }
 
-void	put_player_on_map(t_player *player, int *map)
+bool	put_player_on_map(t_player *player, int *map)
 {
   int	*empty;
   int	empty_len;
@@ -62,12 +62,13 @@ void	put_player_on_map(t_player *player, int *map)
 
   empty = recup_empty_places(map);
   if ((empty_len = intlen(empty)) == 0)
-    return ;
+    return (false);
   pos = rand() % empty_len;
   map[empty[pos]] = player->team_nb;
   player->x = empty[pos] % WIDTH;
   player->y = empty[pos] / WIDTH;
   free(empty);
+  return (true);
 }
 
 void	print_map(int *map)

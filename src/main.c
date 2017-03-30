@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:01:55 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:18:27 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -19,201 +19,7 @@
 #include <sys/msg.h>
 #include <stdio.h>
 #include <time.h>
-#include <errno.h>
 #include "lemipc.h"
-
-t_vector2	g_dir_to_vector2[5] =
-  {
-    {0, 0},
-    {0, -1},
-    {0, 1},
-    {-1, 0},
-    {1, 0}
-  };
-
-struct sembuf getsem_op(int sem_num, int op_value)
-{
-  struct sembuf sops;
-
-  sops.sem_num = sem_num;
-  sops.sem_op = op_value;
-  sops.sem_flg = 0;
-  return sops;
-}
-
-void		lock(int sem_id)
-{
-  struct sembuf sops;
-
-  sops = getsem_op(0, -1);
-  semop(sem_id, &sops, 1);
-}
-
-void		unlock(int sem_id)
-{
-  struct sembuf sops;
-
-  sops = getsem_op(0, 1);
-  semop(sem_id, &sops, 1);
-}
-
-t_vector2	diff_vector(t_vector2 a, t_vector2 b)
-{
-  t_vector2	res;
-
-  res.x = a.x - b.x;
-  res.y = a.y - b.y;
-  return (res);
-}
-
-float		distance_vector2(t_vector2 a, t_vector2 b)
-{
-  t_vector2	vec;
-
-  vec = diff_vector(a, b);
-  return (vec.x + vec.y);
-}
-
-t_vector2	get_vector2(int x, int y)
-{
-  t_vector2	vec;
-
-  vec.x = x;
-  vec.y = y;
-  return (vec);
-}
-
-int		find_nearest_enemy(t_player *player, int *map)
-{
-  int		i;
-  int		pos;
-  t_vector2	current;
-  t_vector2	nearest;
-  t_vector2	player_pos;
-
-  i = -1;
-  pos = -1;
-  nearest = get_vector2(player->x, player->y);
-  player_pos = get_vector2(player->x, player->y);
-  while (++i < WIDTH * HEIGHT)
-    {
-      current = get_vector2(i % WIDTH, i / WIDTH);
-      if (abs(player->x - current.x) <= FIND_RANGE && abs(player->y - current.y) <= FIND_RANGE &&
-	  map[i] != player->team_nb && map[i] != 0 &&
-	  (abs(distance_vector2(player_pos, nearest)) == 0 ||
-	   abs(distance_vector2(player_pos, nearest)) > abs(distance_vector2(player_pos, current))))
-	{
-	  nearest = current;
-	  pos = i;
-	}
-    }
-  return (pos);
-}
-
-bool		can_move_direction(int x, int y, int *map,
-				   direction dir)
-{
-  t_vector2	vec;
-
-  vec = g_dir_to_vector2[dir];
-  if ((y + vec.y) * WIDTH + x + vec.x >= 0 &&
-      (y + vec.y) * WIDTH + x + vec.x < WIDTH * HEIGHT)
-    return (map[(y + vec.y) * WIDTH + x + vec.x] == 0);
-  return (false);
-}
-
-
-bool		is_team_blocking_direction(t_player *player, int *map,
-				   direction dir)
-{
-  t_vector2	vec;
-
-  vec = g_dir_to_vector2[dir];
-  if (((int)player->y + vec.y) * WIDTH + (int)player->x + vec.x >= 0 &&
-      (player->y + vec.y) * WIDTH + player->x + vec.x < WIDTH * HEIGHT)
-      return (map[(player->y + vec.y) * WIDTH + player->x + vec.x] == player->team_nb);
-  return (false);
-}
-
-bool		next_to_enemy(t_player *player, int pos_enemy)
-{
-  return (abs(pos_enemy % WIDTH - player->x) <= 1
-	  && abs(pos_enemy / WIDTH - player->y) <= 1);
-}
-
-direction	switch_dir(direction dir)
-{
-
-  if (dir == UP)
-    return (DOWN);
-  if (dir == RIGHT)
-    return (LEFT);
-  if (dir == LEFT)
-    return (RIGHT);
-  if (dir == DOWN)
-      return (UP);
-  return (NONE);
-}
-
-direction		get_direction(t_player *player, int *map, int pos)
-{
-  int			x;
-  int			y;
-  int			diff_x;
-  int			diff_y;
-  direction		dir;
-  static direction	prev_dir;
-
-  x = pos % WIDTH;
-  y = pos / WIDTH;
-  dir = NONE;
-  diff_x = (int)(x - player->x);
-  diff_y = (int)(y - player->y);
-  if (!next_to_enemy(player, pos))
-    {
-      if (prev_dir != LEFT)
-	{
-	  (diff_x < 0) ? (dir = LEFT) : (dir = RIGHT);
-	  prev_dir = LEFT;
-	  if (dir != NONE && can_move_direction(player->x, player->y, map, dir))
-	    return (dir);
-	}
-      else
-	{
-	  prev_dir = UP;
-	  (diff_y < 0) ? (dir = UP) : (dir = DOWN);
-	  if (dir != NONE && can_move_direction(player->x, player->y, map, dir))
-	    return (dir);
-	}
-    }
-  else
-    printf("Not moving next to enemy\n");
-  return (NONE);
-}
-
-bool		is_target_alive(t_player *player, int pos_target, int *map)
-{
-  printf("pos target received %d\n", pos_target);
-  return (map[pos_target] != 0 && map[pos_target] != player->team_nb);
-}
-
-bool		listen_to_team(t_player *player, int *map, t_msg *msg)
-{
-  printf("waiting msg\n");
-  if (wait_msg(player, msg) > 0)
-    {
-      printf("Message received %ld %s\n", msg->mtype, msg->mtext);
-      if (is_target_alive(player, atoi(msg->mtext), map))
-	{
-	  printf("target is alive send_msg\n");
-	  send_msg(player, atoi(msg->mtext));
-	  return (true);
-	}
-      else
-	printf("but target is dead\n");
-    }
-  return (false);
-}
 
 void		call_to_arms(t_player *player, int *map)
 {
@@ -242,28 +48,6 @@ void		call_to_arms(t_player *player, int *map)
       if ((move_dir = get_direction(player, map, atoi(msg.mtext))) != NONE)
 	move_fct[move_dir](player, map);
     }
-}
-
-int		wait_msg(t_player *player, t_msg *msg)
-{
-  int		r;
-
-  r = msgrcv(player->msg_id, msg, sizeof(t_msg), player->team_nb, IPC_NOWAIT);
-  if (r < 0)
-    printf("error %s\n", strerror(errno));
-  printf("return value msgrecv :%d\n", r);
-  return r;
-}
-
-void		send_msg(t_player *player, int pos)
-{
-  t_msg		msg;
-
-  bzero(&msg, sizeof(t_msg));
-  msg.mtype = player->team_nb;
-  sprintf(msg.mtext, "%d", pos);
-  printf("msg_id %d -> pos send to team :%ld %s\n", player->msg_id, msg.mtype, msg.mtext);
-  msgsnd(player->msg_id, &msg, sizeof(msg), IPC_NOWAIT);
 }
 
 int		main(int ac, char **av)
@@ -305,7 +89,11 @@ int		main(int ac, char **av)
   printf("using shm_id :%d\n", player.shm_id);
   semctl(player.sem_id, 0, SETVAL, 1);
   map = shmat(player.shm_id, NULL, 0);
-  put_player_on_map(&player, map);
+  if (!put_player_on_map(&player, map))
+    {
+      printf("No more places on the map\n");
+      return (1);
+    }
   while (!check_launch(&player, map));
   while ((player.alive = is_alive(&player, map)) || player.is_first)
     {

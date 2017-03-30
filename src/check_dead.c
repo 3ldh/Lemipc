@@ -5,7 +5,7 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 14:07:49 2017 Alexandre BLANCHARD
-** Last update Wed Mar 29 17:44:59 2017 Sauvau Mathieu
+** Last update Thu Mar 30 14:55:14 2017 Alexandre BLANCHARD
 */
 
 #include <stdio.h>
@@ -54,11 +54,11 @@ int	check_surronding(int *map, int x, int y,
   return (count);
 }
 
-bool    is_alive(t_player *player, int *map)
+bool	is_alive(t_player *player, int *map)
 {
-  int   i;
-  int   j;
-  int   map_value;
+  int	i;
+  int	j;
+  int	map_value;
 
   i = -2;
   if (!player->alive)

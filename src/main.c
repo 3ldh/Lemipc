@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:18:27 2017 Sauvau Mathieu
+** Last update Thu Mar 30 15:06:14 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -50,6 +50,56 @@ void		call_to_arms(t_player *player, int *map)
     }
 }
 
+void		init_sem_msg(t_player *player)
+{
+  if ((player->sem_id = semget(player->key, 1, SHM_W | SHM_R)) == -1)
+    {
+      player->sem_id = semget(player->key, 1, IPC_CREAT | SHM_W | SHM_R);
+      printf("Creating semaphore :%d\n", player->sem_id);
+    }
+  if ((player->msg_id = msgget(player->key, SHM_W | SHM_R)) == -1)
+    {
+      player->msg_id = msgget(player->key, IPC_CREAT | SHM_W | SHM_R);
+      printf("Creating msg_q :%d\n", player->msg_id);
+    }
+}
+
+void		init_shm(t_player *player)
+{
+  if ((player->shm_id = shmget(player->key, WIDTH * HEIGHT *
+			      sizeof(int), SHM_W | SHM_R)) == -1)
+    {
+      player->shm_id = shmget(player->key, WIDTH * HEIGHT *
+			     sizeof(int), IPC_CREAT |  SHM_W | SHM_R);
+      printf("Creating shm :%d\n", player->shm_id);
+      player->is_first = true;
+      map = shmat(player->shm_id, NULL, 0);
+      memset(map, 0, WIDTH * HEIGHT * sizeof(int));
+    }
+}
+
+void		loop(t_player *playern, int *map)
+{
+  while (!check_launch(&player, map));
+  while ((player->alive = is_alive(&player, map)) || player->is_first)
+    {
+      if (is_winner(map))
+      	break;
+      lock(player->sem_id);
+      if (player->alive)
+	call_to_arms(&player, map);
+      if (player->is_first)
+      	  print_map(map);
+      unlock(player->sem_id);
+      sleep(1);
+    }
+  if (player->is_first)
+    {
+      shmctl(player->shm_id, IPC_RMID, NULL);
+      msgctl(player->msg_id, IPC_RMID, NULL);
+    }
+}
+
 int		main(int ac, char **av)
 {
   t_player	player;
@@ -65,28 +115,8 @@ int		main(int ac, char **av)
   player.alive = true;
   player.team_nb = atoi(av[2]);
   player.is_first = false;
-  printf("key %d\n", player.key);
-  if ((player.shm_id = shmget(player.key, WIDTH * HEIGHT *
-			      sizeof(int), SHM_W | SHM_R)) == -1)
-    {
-      player.shm_id = shmget(player.key, WIDTH * HEIGHT *
-			     sizeof(int), IPC_CREAT |  SHM_W | SHM_R);
-      printf("Creating shm :%d\n", player.shm_id);
-      player.is_first = true;
-      map = shmat(player.shm_id, NULL, 0);
-      memset(map, 0, WIDTH * HEIGHT * sizeof(int));
-    }
-  if ((player.sem_id = semget(player.key, 1, SHM_W | SHM_R)) == -1)
-    {
-      player.sem_id = semget(player.key, 1, IPC_CREAT | SHM_W | SHM_R);
-      printf("Creating semaphore :%d\n", player.sem_id);
-    }
-  if ((player.msg_id = msgget(player.key, SHM_W | SHM_R)) == -1)
-    {
-      player.msg_id = msgget(player.key, IPC_CREAT | SHM_W | SHM_R);
-      printf("Creating msg_q :%d\n", player.msg_id);
-    }
-  printf("using shm_id :%d\n", player.shm_id);
+  init_shm(&player);
+  init_sem_msg(&player);
   semctl(player.sem_id, 0, SETVAL, 1);
   map = shmat(player.shm_id, NULL, 0);
   if (!put_player_on_map(&player, map))
@@ -94,23 +124,6 @@ int		main(int ac, char **av)
       printf("No more places on the map\n");
       return (1);
     }
-  while (!check_launch(&player, map));
-  while ((player.alive = is_alive(&player, map)) || player.is_first)
-    {
-      if (is_winner(map))
-      	break;
-      lock(player.sem_id);
-      if (player.alive)
-	call_to_arms(&player, map);
-      if (player.is_first)
-      	  print_map(map);
-      unlock(player.sem_id);
-      sleep(1);
-    }
-  if (player.is_first)
-    {
-      shmctl(player.shm_id, IPC_RMID, NULL);
-      msgctl(player.msg_id, IPC_RMID, NULL);
-    }
+  loop(&player, map);
   return (0);
 }

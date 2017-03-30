@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Thu Mar 30 15:23:07 2017 Sauvau Mathieu
+** Last update Thu Mar 30 16:03:06 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -80,6 +80,7 @@ void		init_shm(t_player *player, int **map)
 
 void		loop(t_player *player, int *map)
 {
+  (void)map;
   while (!check_launch(player, map));
   while ((player->alive = is_alive(player, map)) || player->is_first)
     {
@@ -91,9 +92,11 @@ void		loop(t_player *player, int *map)
       if (player->is_first)
       	  print_map(map);
       unlock(player->sem_id);
+      usleep(6000);
     }
   if (player->is_first)
     {
+      print_map(map);
       shmctl(player->shm_id, IPC_RMID, NULL);
       msgctl(player->msg_id, IPC_RMID, NULL);
     }

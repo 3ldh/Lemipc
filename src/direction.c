@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 14:11:10 2017 Sauvau Mathieu
-** Last update Thu Mar 30 15:06:32 2017 Sauvau Mathieu
+** Last update Thu Mar 30 15:22:00 2017 Sauvau Mathieu
 */
 
 #include <stdlib.h>
@@ -36,7 +36,7 @@ direction		get_direction(t_player *player, int *map, int pos)
   static direction	prev_dir;
 
   dir = NONE;
-  diff = get_vector((int)(pos % WIDTH - player->x),
+  diff = get_vector2((int)(pos % WIDTH - player->x),
 		    (int)(pos / WIDTH - player->y));
   if (!next_to_enemy(player, pos))
     {

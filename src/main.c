@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Thu Mar 30 16:03:06 2017 Sauvau Mathieu
+** Last update Fri Mar 31 13:46:54 2017 Alexandre BLANCHARD
 */
 
 #include <time.h>
@@ -19,7 +19,12 @@
 #include <sys/msg.h>
 #include <stdio.h>
 #include <time.h>
+#include <signal.h>
 #include "lemipc.h"
+
+int		id_shm;
+int		id_msg;
+int		id_sem;
 
 void		call_to_arms(t_player *player, int *map)
 {
@@ -55,11 +60,13 @@ void		init_sem_msg(t_player *player)
   if ((player->sem_id = semget(player->key, 1, SHM_W | SHM_R)) == -1)
     {
       player->sem_id = semget(player->key, 1, IPC_CREAT | SHM_W | SHM_R);
+      id_sem = player->sem_id;
       printf("Creating semaphore :%d\n", player->sem_id);
     }
   if ((player->msg_id = msgget(player->key, SHM_W | SHM_R)) == -1)
     {
       player->msg_id = msgget(player->key, IPC_CREAT | SHM_W | SHM_R);
+      id_msg = player->msg_id;
       printf("Creating msg_q :%d\n", player->msg_id);
     }
 }
@@ -75,12 +82,14 @@ void		init_shm(t_player *player, int **map)
       player->is_first = true;
       *map = shmat(player->shm_id, NULL, 0);
       memset(*map, 0, WIDTH * HEIGHT * sizeof(int));
+      id_shm = player->shm_id;
     }
 }
 
 void		loop(t_player *player, int *map)
 {
   (void)map;
+  signal(SIGINT, catch_sig_int);
   while (!check_launch(player, map));
   while ((player->alive = is_alive(player, map)) || player->is_first)
     {
@@ -88,7 +97,7 @@ void		loop(t_player *player, int *map)
       	break;
       lock(player->sem_id);
       if (player->alive)
-	call_to_arms(player, map);
+  	call_to_arms(player, map);
       if (player->is_first)
       	  print_map(map);
       unlock(player->sem_id);

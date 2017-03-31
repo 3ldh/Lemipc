@@ -5,15 +5,15 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Thu Mar 30 15:59:59 2017 Sauvau Mathieu
+** Last update Fri Mar 31 11:40:14 2017 Alexandre BLANCHARD
 */
 
 #ifndef LEMIPC_H_
 
 # define LEMIPC_H_
 
-# define WIDTH 50
-# define HEIGHT 50
+# define WIDTH 20
+# define HEIGHT 20
 # define FIND_RANGE 50
 # define MIN_TEAM 2
 # define MIN_PLAYER 1
@@ -89,5 +89,7 @@ bool		check_launch(t_player *, int *);
 t_vector2	diff_vector(t_vector2 a, t_vector2 b);
 float		distance_vector2(t_vector2 a, t_vector2 b);
 t_vector2	get_vector2(int x, int y);
+
+void		catch_sig_int();
 
 #endif /* ! LEMIPC_H_ */

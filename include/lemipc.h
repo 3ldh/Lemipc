@@ -5,16 +5,16 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:10:46 2017 Sauvau Mathieu
+** Last update Thu Mar 30 15:59:59 2017 Sauvau Mathieu
 */
 
 #ifndef LEMIPC_H_
 
 # define LEMIPC_H_
 
-# define WIDTH 20
-# define HEIGHT 20
-# define FIND_RANGE 20
+# define WIDTH 50
+# define HEIGHT 50
+# define FIND_RANGE 50
 # define MIN_TEAM 2
 # define MIN_PLAYER 1
 

@@ -5,12 +5,26 @@
 ** Login   <blanch_p@epitech.net>
 **
 ** Started on  Mon Mar 27 14:07:49 2017 Alexandre BLANCHARD
-** Last update Thu Mar 30 14:55:14 2017 Alexandre BLANCHARD
+** Last update Fri Mar 31 15:10:55 2017 Alexandre BLANCHARD
 */
 
 #include <stdio.h>
 #include <stdio.h>
 #include "lemipc.h"
+
+int	who_win(int *map)
+{
+  int	i;
+
+  i = 0;
+  while (i < WIDTH * HEIGHT)
+    {
+      if (map[i] != 0)
+	return (map[i]);
+      i++;
+    }
+  return (0);
+}
 
 bool	is_winner(int *map)
 {

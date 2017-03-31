@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Fri Mar 31 15:09:56 2017 Sauvau Mathieu
+** Last update Fri Mar 31 15:14:23 2017 Sauvau Mathieu
 */
 
 #include <time.h>
@@ -80,7 +80,6 @@ void		init_shm(t_player *player, int **map)
 
 void		loop(t_player *player, int *map)
 {
-  (void)map;
   signal(SIGINT, catch_sig_int);
   while (!check_launch(player, map));
   while ((player->alive = is_alive(player, map)) || player->is_first)
@@ -98,6 +97,7 @@ void		loop(t_player *player, int *map)
   if (player->is_first)
     {
       print_map(map);
+      printf("\nAnd the winner is Team %d\n\n", who_win(map));
       shmctl(player->shm_id, IPC_RMID, NULL);
       msgctl(player->msg_id, IPC_RMID, NULL);
       semctl(player->sem_id, 1, IPC_RMID);

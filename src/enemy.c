@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 14:13:27 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:14:59 2017 Sauvau Mathieu
+** Last update Fri Mar 31 14:31:26 2017 Sauvau Mathieu
 */
 
 #include <stdio.h>
@@ -14,7 +14,6 @@
 
 bool		is_target_alive(t_player *player, int pos_target, int *map)
 {
-  printf("pos target received %d\n", pos_target);
   return (map[pos_target] != 0 && map[pos_target] != player->team_nb);
 }
 

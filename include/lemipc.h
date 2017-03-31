@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Fri Mar 24 14:15:27 2017 Sauvau Mathieu
-** Last update Fri Mar 31 11:40:14 2017 Alexandre BLANCHARD
+** Last update Fri Mar 31 15:10:43 2017 Alexandre BLANCHARD
 */
 
 #ifndef LEMIPC_H_
@@ -82,6 +82,7 @@ bool		is_target_alive(t_player *player, int pos_target, int *map);
 direction	get_direction(t_player *player, int *map, int pos);
 int		find_nearest_enemy(t_player *player, int *map);
 bool		is_winner(int *);
+int		who_win(int *);
 bool		is_two_teams(int *);
 bool		check_launch(t_player *, int *);
 

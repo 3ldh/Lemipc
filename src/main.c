@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Thu Mar 30 13:12:21 2017 Sauvau Mathieu
-** Last update Fri Mar 31 13:46:54 2017 Alexandre BLANCHARD
+** Last update Fri Mar 31 15:12:11 2017 Alexandre BLANCHARD
 */
 
 #include <time.h>
@@ -106,6 +106,7 @@ void		loop(t_player *player, int *map)
   if (player->is_first)
     {
       print_map(map);
+      printf("\nAnd the winner is Team %d\n\n", who_win(map));
       shmctl(player->shm_id, IPC_RMID, NULL);
       msgctl(player->msg_id, IPC_RMID, NULL);
     }

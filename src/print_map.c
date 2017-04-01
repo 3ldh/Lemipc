@@ -5,7 +5,7 @@
 ** Login   <mathieu.sauvau@epitech.eu>
 **
 ** Started on  Wed Mar 29 15:12:16 2017 Sauvau Mathieu
-** Last update Thu Mar 30 14:58:45 2017 Alexandre BLANCHARD
+** Last update Sat Apr  1 11:25:59 2017 Alexandre BLANCHARD
 */
 
 #include <string.h>
@@ -67,6 +67,18 @@ bool	put_player_on_map(t_player *player, int *map)
   return (true);
 }
 
+void	size_map()
+{
+  int	i;
+
+  i = 0;
+  while (i < WIDTH * 2 + 1)
+    {
+      printf("-");
+      i++;
+    }
+}
+
 void	print_map(int *map)
 {
   int	x;
@@ -74,17 +86,24 @@ void	print_map(int *map)
 
   y = -1;
   x = -1;
+  printf("+");
+  size_map();
+  printf("+\n| ");
   while (++y < HEIGHT * WIDTH)
     {
       if (x == WIDTH - 1)
 	{
 	  x = -1;
-	  printf("\n");
+	  printf(" |\n| ");
 	}
       else if (x != -1)
 	printf(" ");
       ++x;
       printf("%d", map[y]);
     }
-  printf("\n----------------------------------------\n");
+  printf(" |\n+");
+  size_map();
+  printf("+\n\n ");
+  size_map();
+  printf("\n\n");
 }
